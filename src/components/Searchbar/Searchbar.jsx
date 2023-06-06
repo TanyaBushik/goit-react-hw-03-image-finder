@@ -1,9 +1,16 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { toastConfig } from 'services/utils';
 import { BsSearch } from 'react-icons/bs';
-import { Search } from './Searchbar.styled';
+import {
+  Search,
+  SearchForm,
+  SearchButton,
+  SearchButtonLabel,
+  SearchInput,
+} from './Searchbar.styled';
 
 export class Searchbar extends Component {
   state = {
@@ -20,8 +27,7 @@ export class Searchbar extends Component {
     event.preventDefault();
 
     if (this.state.gallerySearchItem.trim() === '') {
-      toast.error('Enter a valid query', toastConfig);
-      return;
+      return toast.error('Enter a valid query', toastConfig);
     }
 
     this.props.handleSearchSubmit(this.state.gallerySearchItem);
@@ -31,13 +37,13 @@ export class Searchbar extends Component {
   render() {
     return (
       <Search>
-        <form onSubmit={this.handleSubmit} className="form">
-          <button type="submit" className="button">
-            <BsSearch value={{ style: { marginRigth: 8, padding: 3 } }} />
-            {/* <span className="button-label">Search</span> */}
-          </button>
+        <SearchForm onSubmit={this.handleSubmit} className="form">
+          <SearchButton type="submit">
+            <BsSearch style={{ width: 20, height: 20 }} />
+            <SearchButtonLabel>Search</SearchButtonLabel>
+          </SearchButton>
 
-          <input
+          <SearchInput
             className="input"
             type="text"
             autoComplete="off"
@@ -47,8 +53,12 @@ export class Searchbar extends Component {
             value={this.state.gallerySearchItem}
             onChange={this.handleSearchInput}
           />
-        </form>
+        </SearchForm>
       </Search>
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+};
